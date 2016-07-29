@@ -17,17 +17,16 @@ module Challenger
 
       FileUtils.cd(@project) do
         _run "sed -i .sav -e 's/TODO/WIP/g' #{gemspec}"
+        _run "sed -i .sav -e 's/\\[USERNAME\\]/sideshowbandana/g' README.md"
         File.open("Gemfile", "a") do |f|
           f.puts %{gem 'guard-rspec', require: false }
         end
 
-        _run "rvm use ruby-2.3.1@#{@project}"
         _run "bundle"
 
         write_templates
         FileUtils.mkdir("spec/lib")
         FileUtils.mv("spec/#{@project}_spec.rb", "spec/lib")
-        _run "guard"
       end
 
     end
